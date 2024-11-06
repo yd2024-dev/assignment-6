@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx_container
+    ports:
+      - "8080:80"  # Expose port 8080 to access the nginx server on the host
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf  # Mount custom nginx configuration (if any)
+    depends_on:
+      - app1  # Ensure NGINX starts only after app1 is up
+
+  app1:
+    build: .  # Build from the Dockerfile in the current directory (root of your project)
+    expose:
+      - "3000"  # Expose port 3000 internally to other containers, nginx can access this port
+    environment:
+      - NODE_ENV=production  # Set environment variables for the app container
+    volumes:
+      - .:/app  # Mount the root directory into the container, ensuring code changes are reflected
+    deploy:
+      replicas: 3  # Scale app1 to 3 instances (you can adjust this number)
+    networks:
+      - app-network  # Ensure app1 joins the same network as nginx container
+
+networks:
+  app-network:  # Define custom network to ensure communication between nginx and app1
+    driver: bridge  # This will use the default bridge network mode, can be modified as needed

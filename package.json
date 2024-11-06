@@ -4,6 +4,7 @@
   "description": "This is a template repository for the first assignment in BVD 103 at McMaster Continuing Education.",
   "main": "index.ts",
   "scripts": {
+    "start": "npm run start-server",
     "start-server": "./generate-openapi.sh && tsx ./index.ts",
     "lint": "./generate-openapi.sh && eslint ./**/*.ts",
     "fix-lint": "./generate-openapi.sh && eslint --fix ./**/*.ts",
@@ -40,6 +41,7 @@
     "eslint-plugin-n": "^16.6.2",
     "eslint-plugin-promise": "^6.1.1",
     "mongodb-memory-server": "^9.1.8",
+    "tsx": "^4.19.2",
     "typescript": "^5.4.3",
     "vitest": "^1.4.0"
   }
