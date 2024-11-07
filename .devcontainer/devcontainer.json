@@ -1,34 +1,26 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
 {
 	"name": "Node.js & TypeScript",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"dockerComposeFile": ["docker-compose.yml"],
-	"service": "dev",
+	"dockerComposeFile": ["docker-compose.yml"],  // Use docker-compose.yml for service management
+	"service": "dev",  // The service inside the docker-compose.yml to connect to
 	"features": {
-		"ghcr.io/devcontainers-contrib/features/tsx:1": {},
-		"ghcr.io/mcmastercce/bvd-103-mcmasterful-books/mcmasterful-books:latest": {},
-		"ghcr.io/devcontainers/features/java": {},
-		"docker-in-docker": "latest",  // Adding the Docker-in-Docker feature
+		"ghcr.io/devcontainers-contrib/features/tsx:1": {},  // Support for TypeScript execution using tsx
+		"ghcr.io/mcmastercce/bvd-103-mcmasterful-books/mcmasterful-books:latest": {},  // Custom feature for your app
+		"ghcr.io/devcontainers/features/java": {},  // Adds Java support to the dev container
+		"docker-in-docker": "latest"
 	},
-
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
-
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-
-	// Use 'postCreateCommand' to run commands after the container is created.
-
-	// Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"rangav.vscode-thunder-client"
+				"rangav.vscode-thunder-client"  // Add Thunder Client for API testing in VSCode
 			]
 		}
 	},
-
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	"remoteUser": "root"
+	"remoteUser": "root",  // Run as root user inside the devcontainer
+	"runArgs": [
+		"--privileged"  // Enable Docker-in-Docker functionality (allow Docker commands inside the container)
+	],
+	"forwardPorts": [8080],  // Forward port 8080 to access the NGINX service from outside the dev container
+	"workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",  // Mount workspace
+	"workspaceFolder": "/workspace",  // Folder where the workspace is located inside the dev container
+	"postCreateCommand": "docker-compose up"  // Run docker-compose up after container creation to start services
 }

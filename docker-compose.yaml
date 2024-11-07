@@ -1,29 +1,26 @@
-version: "3.8"
+version: '3.7'
 
 services:
   nginx:
-    image: nginx:latest
+    image: nginx:alpine
     container_name: nginx_container
     ports:
-      - "8080:80"  # Expose port 8080 to access the nginx server on the host
+      - "8080:80"  # Map port 8080 on your local machine to port 80 inside the container
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf  # Mount custom nginx configuration (if any)
-    depends_on:
-      - app1  # Ensure NGINX starts only after app1 is up
-
-  app1:
-    build: .  # Build from the Dockerfile in the current directory (root of your project)
-    expose:
-      - "3000"  # Expose port 3000 internally to other containers, nginx can access this port
-    environment:
-      - NODE_ENV=production  # Set environment variables for the app container
-    volumes:
-      - .:/app  # Mount the root directory into the container, ensuring code changes are reflected
-    deploy:
-      replicas: 3  # Scale app1 to 3 instances (you can adjust this number)
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf  # Map nginx.conf from your repo to Nginx container
     networks:
-      - app-network  # Ensure app1 joins the same network as nginx container
+      - dev-network
+
+  front-end:
+    image: ghcr.io/mcmastercce/bvd-103-mcmasterful-books/mcmasterful-books-docker:main
+    container_name: front_end
+    ports:
+      - "9080:9080"  # Make sure this port is exposed correctly
+    volumes:
+      - ./adapter:/source/adapter  # Map the 'adapter' folder to the container
+    networks:
+      - dev-network
 
 networks:
-  app-network:  # Define custom network to ensure communication between nginx and app1
-    driver: bridge  # This will use the default bridge network mode, can be modified as needed
+  dev-network:
+    driver: bridge
