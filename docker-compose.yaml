@@ -3,24 +3,35 @@ version: '3.7'
 services:
   nginx:
     image: nginx:alpine
-    container_name: nginx_container
-    ports:
-      - "8080:80"  # Map port 8080 on your local machine to port 80 inside the container
+    container_name: nginx
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf  # Map nginx.conf from your repo to Nginx container
-    networks:
-      - dev-network
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf  # Mount custom Nginx config
+    ports:
+      - "8080:80"  # Expose port 8080 on host, mapping to 80 on Nginx container
+    depends_on:
+      - front-end
 
   front-end:
     image: ghcr.io/mcmastercce/bvd-103-mcmasterful-books/mcmasterful-books-docker:main
-    container_name: front_end
-    ports:
-      - "9080:9080"  # Make sure this port is exposed correctly
+    container_name: front-end
     volumes:
-      - ./adapter:/source/adapter  # Map the 'adapter' folder to the container
-    networks:
-      - dev-network
+      - ./adapter:/source/adapter  # Keep this volume mount for adapter directory
+    environment:
+      - NODE_ENV=production
+    # No need to expose port 9080 here; used internally by Nginx
 
-networks:
-  dev-network:
-    driver: bridge
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+
+  server:
+    image: node:20
+    container_name: server
+    working_dir: /app
+    volumes:
+      - ./:/app  # Mount current directory for server
+    command: npx -y tsx ./index.ts
+    ports:
+      - "3000:3000"
