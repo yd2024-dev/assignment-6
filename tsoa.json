@@ -1,20 +1,26 @@
 {
-    "entryFile": "index.ts",
+    "entryFile": "index.ts", 
     "noImplicitAdditionalProperties": "throw-on-extras",
-    "controllerPathGlobs": [
-      "src/**/*.route.ts"
-    ],
+    "controllerPathGlobs": ["src/**/*.route.ts"], 
     "spec": {
-      "outputDirectory": "build",
-      "specVersion": 3,
+      "specVersion": 2, 
+      "outputDirectory": "build", 
+      "filePath": "build/swagger.json", 
       "swagger": {
-        "basePath": "/api",
-        "filePath": "build/openapi.json"  
+        "basePath": "/api", 
+        "schemes": [
+          "http"
+        ],
+        "info": {
+          "title": "Bookstore API", 
+          "description": "API documentation for a bookstore service", 
+          "version": "1.0.0"
+        }
       }
     },
     "routes": {
-      "routesDir": "build",
-      "middleware": "koa"
+      "routesDir": "build", 
+      "middleware": "koa" 
     }
   }
   
