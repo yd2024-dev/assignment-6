@@ -11,12 +11,13 @@ export interface Book {
   image: string
 };
 
-async function listBooks (filters?: Array<{ from?: number, to?: number }>): Promise<Book[]> {
+async function listBooks(filters?: Array<{ from?: number, to?: number }>): Promise<Book[]> {
   return await previous_assignment.listBooks(filters)
 }
 
-async function createOrUpdateBook (book: Book): Promise<BookID> {
-  const result = await fetch('http://localhost:3000/books', {
+async function createOrUpdateBook(book: Book): Promise<BookID> {
+  // Update the fetch URL to use '/api' as base path
+  const result = await fetch('/api/books', {
     method: 'POST',
     body: JSON.stringify(book),
     headers: {
@@ -32,11 +33,12 @@ async function createOrUpdateBook (book: Book): Promise<BookID> {
   }
 }
 
-async function removeBook (book: BookID): Promise<void> {
-  const result = await fetch(`http://localhost:3000/books/${book}`, { method: 'DELETE' })
+async function removeBook(book: BookID): Promise<void> {
+  // Update the fetch URL to use '/api' as base path
+  const result = await fetch(`/api/books/${book}`, { method: 'DELETE' })
 
   if (!result.ok) {
-    throw new Error('Failed to create or update book')
+    throw new Error('Failed to remove book')
   }
 }
 

@@ -1,13 +1,20 @@
 {
     "entryFile": "index.ts",
     "noImplicitAdditionalProperties": "throw-on-extras",
-    "controllerPathGlobs": ["src/**/*.route.ts"],
+    "controllerPathGlobs": [
+      "src/**/*.route.ts"
+    ],
     "spec": {
-        "outputDirectory": "build",
-        "specVersion": 3
+      "outputDirectory": "build",
+      "specVersion": 3,
+      "swagger": {
+        "basePath": "/api",
+        "filePath": "build/openapi.json"  
+      }
     },
     "routes": {
-        "routesDir": "build",
-        "middleware": "koa"
+      "routesDir": "build",
+      "middleware": "koa"
     }
-}
+  }
+  
