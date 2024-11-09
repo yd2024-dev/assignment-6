@@ -5,8 +5,6 @@ import zodRouter from 'koa-zod-router'
 import { setupBookRoutes } from './src/books'
 import { RegisterRoutes } from './build/routes'
 import swagger from './build/swagger.json'
-//import swagger from './build/openapi.json'
-
 import KoaRouter from '@koa/router'
 import { koaSwagger } from 'koa2-swagger-ui'
 import bodyParser from 'koa-bodyparser'
@@ -30,24 +28,29 @@ export default async function (port?: number, randomizeDbs?: boolean): Promise<{
     await next()
   })
 
-  // We use koa-qs to enable parsing complex query strings, like our filters.
+  // Enable complex query string parsing
   qs(app)
 
-  // And we add cors to ensure we can access our API from the mcmasterful-books website
+  // CORS configuration
   app.use(cors())
 
+  // Create router instance
   const router = zodRouter({ zodRouter: { exposeRequestErrors: true } })
 
+  // Set up book routes
   setupBookRoutes(router, state.books)
 
+  // Use body parser
   app.use(bodyParser())
+
+  // Register the routes
   app.use(router.routes())
 
+  // Set up Swagger UI
   const koaRouter = new KoaRouter()
-
   RegisterRoutes(koaRouter)
-
   app.use(koaRouter.routes())
+
   app.use(koaSwagger({
     routePrefix: '/docs',
     specPrefix: '/docs/spec',
@@ -55,11 +58,12 @@ export default async function (port?: number, randomizeDbs?: boolean): Promise<{
     swaggerOptions: {
       spec: swagger
     }
-
   }))
+
+  // Start the server on port 3000 or the provided port
   return {
-    server: app.listen(port, () => {
-      console.log('listening')
+    server: app.listen(port, '0.0.0.0', () => {
+      console.log('Server is listening on port', port)
     }),
     state
   }
