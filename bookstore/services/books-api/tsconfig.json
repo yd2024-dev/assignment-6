@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES6",                             // Target ES6 for modern features
+    "module": "CommonJS",                        // Use CommonJS module system
+    "moduleResolution": "node",                  // Use Node resolution for modules
+    "esModuleInterop": true,                     // Enable ES module interoperability
+    "strict": true,                              // Enable strict mode for better type safety
+    "skipLibCheck": true,                        // Skip checking type libraries
+    "forceConsistentCasingInFileNames": true,    // Ensure consistent casing of file names
+    "outDir": "./dist",                          // Output compiled files to ./dist folder
+    "rootDir": "./src",                          // Root source directory
+    "experimentalDecorators": true,              // Enable experimental decorators for TSOA
+    "emitDecoratorMetadata": true,               // Emit metadata for TSOA
+    "baseUrl": ".",                              // Resolve paths relative to the root folder
+    "paths": {
+      "routes": ["dist/routes"]                  // Resolve routes from dist/routes for production
+    }
+  },
+  "include": ["src/**/*.ts"],                    // Include all TypeScript files in src directory
+  "exclude": ["node_modules"]                     // Exclude node_modules directory
+}

@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+      "target": "ES6",                        // Compile to ES6
+      "module": "commonjs",                    // Use CommonJS module system
+      "esModuleInterop": true,                 // Enable esModuleInterop
+      "strict": true,                          // Enable strict type-checking options
+      "skipLibCheck": true,                    // Skip type checking of all declaration files
+      "forceConsistentCasingInFileNames": true, // Ensure consistent casing in file names
+      "outDir": "./dist",                      // Output directory for compiled files
+      "rootDir": "./src",                      // Source code folder
+      "baseUrl": "./src",                      // Base directory for module resolution
+      "experimentalDecorators": true,          // Enable decorators
+    "emitDecoratorMetadata": true            // Emit metadata for decorators
+    },
+    "include": ["src/**/*.ts"],                 // Include all TS files in the src folder
+    "exclude": ["node_modules"]                 // Exclude node_modules
+  }
+  
