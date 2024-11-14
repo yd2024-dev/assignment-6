@@ -1,23 +1,43 @@
 import Koa from 'koa';
-import koaSwagger from 'koa2-swagger-ui';
+import Router from 'koa-router';
+import * as koaSwagger from 'koa2-swagger-ui';  // Correct import
 import path from 'path';
+import { RegisterRoutes } from './routes/routes'; // TSOA-generated routes
 
 const app = new Koa();
-const port = 3000;
+const router = new Router();
 
-// Path to your Swagger JSON file
-const swaggerJsonPath = path.join(__dirname, 'swagger.json');
+// Register TSOA routes
+RegisterRoutes(router as any);  // Cast it to `any` to resolve type issues
 
-// Swagger UI setup
-app.use(koaSwagger({
-  routePrefix: '/docs',  // Route to access Swagger UI
+// Determine the environment
+const isProduction = process.env.NODE_ENV === 'production';
+const swaggerJsonPath = path.resolve(isProduction ? 'swagger/swagger.json' : 'swagger/swagger.json');
+
+// Use koa2-swagger-ui to serve Swagger UI
+app.use(koaSwagger.koaSwagger({
+  routePrefix: '/docs',  // Swagger UI route
+  specPrefix: '/docs/spec',  // Swagger spec route
+  exposeSpec: true,  // Expose the Swagger spec JSON
   swaggerOptions: {
-    url: swaggerJsonPath, // Path to the swagger JSON file
-  },
+    spec: require(swaggerJsonPath),  // Swagger spec path
+  }
 }));
 
-// Your routes and other setup here...
+// Add routes from TSOA
+app.use(router.routes()).use(router.allowedMethods());
 
+// Health check route
+app.use(async (ctx, next) => {
+  if (ctx.path === '/health') {
+    ctx.body = { status: 'ok' };
+  } else {
+    await next();
+  }
+});
+
+// Start the app
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+  console.log(`Server is running in ${process.env.NODE_ENV || 'development'} mode on http://localhost:${port}`);
 });
