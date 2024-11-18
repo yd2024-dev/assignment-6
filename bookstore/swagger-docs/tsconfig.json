@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+      "target": "ES6",                // Target ECMAScript 6
+      "module": "commonjs",            // CommonJS module system
+      "moduleResolution": "node",      // Module resolution strategy
+      "strict": true,                  // Enable strict type-checking
+      "esModuleInterop": true,         // Allows importing non-ESM modules
+      "skipLibCheck": true,            // Skip library checks for faster compilation
+      "forceConsistentCasingInFileNames": true,
+      "outDir": "./dist",              // Output directory for compiled JS files
+      "rootDir": "./src",              // The root directory for TypeScript source files
+      "resolveJsonModule": true        // Allow importing JSON modules
+    },
+    "include": [
+      "src/**/*.ts",                   // Include all TypeScript files in `src/` folder
+      "../services/**/*.ts"            // Include API routes from the `services` directory for Swagger JSDoc
+    ],
+    "exclude": [
+      "node_modules",                  // Exclude node_modules
+      "dist"                           // Exclude compiled output
+    ]
+  }
+  
